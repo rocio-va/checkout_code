@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  type_discount: 1
+  min_products: 1
+  products_pay: 1
+  price_unit: 1.5
+  product: one
+
+two:
+  type_discount: 1
+  min_products: 1
+  products_pay: 1
+  price_unit: 1.5
+  product: two
