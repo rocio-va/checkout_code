@@ -8,7 +8,8 @@ RSpec.describe Checkout, type: :model do
     @product_mug = Product.create(code: 'MUG', name: 'Cabify Coffee Mug', price: 7.50) 
     @product_voucher.discount = Discount.create(type_discount: 1, min_products: 2, products_pay: 1)
     @product_tshirt.discount = Discount.create(type_discount: 2, min_products: 3, price_unit: 19.00)
-    @checkout = Checkout.new
+    @discounts = [@product_voucher.discount.id, @product_tshirt.discount.id]
+    @checkout = Checkout.new(@discounts)
   end
   
   describe "check_total_checkout" do

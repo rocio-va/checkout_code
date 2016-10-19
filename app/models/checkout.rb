@@ -1,8 +1,11 @@
 class Checkout 
   
-  def initialize
+  def initialize(pricing_rules)
+    #pricing_rules(parameter) is an array with ids of discounts to apply to this checkout
     #hash to keep products
     @products = {}
+    #@pricing_rules is a hash
+    @pricing_rules = load_discounts(pricing_rules)
   end
 
   def scan(code)
@@ -25,13 +28,28 @@ class Checkout
     @products.each do |key, value|
       product = Product.find_by(code: key)
       amount = value
-      if(product.discount)
-        total_price = total_price + product.discount.calculate_price(amount)
+      if(@pricing_rules[key])
+        #if the checkout have discount to this product
+        total_price = total_price + @pricing_rules[key].calculate_price(amount)
       else
         total_price = total_price + product.price * amount
       end
     end
     total_price
   end
+
+  private
+
+    def load_discounts(pricing_rules)
+      discounts = {}
+      pricing_rules.each do |discount_id|
+        discount = Discount.find_by(id: discount_id)
+        if(discount)
+          code_product = discount.product.code.to_sym
+          discounts[code_product] = discount
+        end
+      end
+      discounts
+    end
 
 end
